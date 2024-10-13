@@ -1,0 +1,51 @@
+- name: Apt update and upgrade
+  hosts: n100
+  tasks:
+  - name: Install a few things
+    become: true
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400 #One day
+      name:
+        - nano
+        - samba
+        - minidlna
+        - rsync
+        - zfsutils-linux
+      state: latest
+  - name: Install docker pre-requisites
+    become: true
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400 #One day
+      name:
+        - ca-certificates
+        - curl
+      state: latest
+  # This method is deprecated now. TODO: use new method
+  # Message:
+  # https://download.docker.com/linux/ubuntu/dists/noble/InRelease: Key is stored in
+  # legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in
+  # apt-key(8) for details.
+  - name: Add Docker GPG apt Key
+    become: true
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+  - name: Add Docker Repository
+    become: true
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu noble stable
+      state: present
+  - name: Install Docker engine
+    become: true
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400 #One day
+      name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+      state: latest
