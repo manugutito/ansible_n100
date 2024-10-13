@@ -1,0 +1,6 @@
+- name: Apt update and upgrade
+  hosts: n100
+  tasks:
+  - name: Run powertop autotune
+    become: true
+    ansible.builtin.shell: powertop --auto-tune >> /home/mjgutierrez/test.out

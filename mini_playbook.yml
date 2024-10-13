@@ -1,0 +1,19 @@
+- name: Apt update and upgrade
+  hosts: n100
+  tasks:
+  - name: Update and upgrade apt packages
+    become: true
+    apt:
+      upgrade: yes
+      update_cache: yes
+      cache_valid_time: 86400
+  - name: Install a few things
+    become: true
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400 #One day
+      name:
+        - minidlna
+        - openseachest
+        - powertop
+        - samba
