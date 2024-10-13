@@ -1,6 +1,16 @@
 - name: Incrementally install stuff to diagnose
   hosts: n100
   tasks:
+  - name: Copy sshd config file
+    become: yes
+    ansible.builtin.copy:
+      src: ./sshd_config
+      dest: /etc/ssh/sshd_config
+      remote_src: no
+      backup: yes
+      owner: root
+      group: root
+      mode: '0640'
   - name: Update and upgrade apt packages
     become: true
     apt:
