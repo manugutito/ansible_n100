@@ -1,16 +1,22 @@
 - name: Incrementally install stuff to diagnose
   hosts: n100
   tasks:
+  # One could do this differently but this works
   - name: Copy sshd config file
     become: yes
     ansible.builtin.copy:
-      src: ./sshd_config
+      src: ./config_files/sshd_config
       dest: /etc/ssh/sshd_config
       remote_src: no
       backup: yes
       owner: root
       group: root
       mode: '0640'
+  - name: Restart sshd to apply config
+    become: yes
+    service:
+      name: ssh
+      state: restarted
   - name: Update and upgrade apt packages
     become: true
     apt:
@@ -30,6 +36,7 @@
   # Bear in mind that no effort was made to find the right path for the Realtek NIC
   # Also blindly running powertop --auto-tune might not be such a good idea. Perhaps
   # it would be better to apply the different settings one by one
+  # Also this edits the files every time!
   - name: Do some power optimizations
     become: true
     ansible.builtin.shell: powertop --auto-tune && echo 1 >> /sys/bus/pci/drivers/r8169/0000\:02\:00.0/link/l1_aspm
@@ -41,3 +48,35 @@
       name:
         - zfsutils-linux
       state: latest
+  - name: Copy minidlna config
+    become: yes
+    ansible.builtin.copy:
+      src: ./config_files/minidlna.conf
+      dest: /etc/minidlna.conf
+      remote_src: no
+      backup: yes
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Create hdd group
+    become: yes
+    ansible.builtin.group:
+      name: hdd
+      state: present
+  - name: add minidlna to group hdd
+    become: yes
+    ansible.builtin.user:
+      name: minidlna
+      groups: hdd
+      append: yes
+  - name: add mjgutierrez to group hdd
+    become: yes
+    ansible.builtin.user:
+      name: mjgutierrez
+      groups: hdd
+      append: yes
+  - name: Restart minidlna to apply config
+    become: yes
+    service:
+      name: minidlna
+      state: restarted
