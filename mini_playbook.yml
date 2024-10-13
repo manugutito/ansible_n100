@@ -17,3 +17,9 @@
         - openseachest
         - powertop
         - samba
+  # Bear in mind that no effort was made to find the right path for the Realtek NIC
+  # Also blindly running powertop --auto-tune might not be such a good idea. Perhaps
+  # it would be better to apply the different settings one by one
+  - name: Do some power optimizations
+    become: true
+    ansible.builtin.shell: powertop --auto-tune && echo 1 >> /sys/bus/pci/drivers/r8169/0000\:02\:00.0/link/l1_aspm
