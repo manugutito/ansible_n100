@@ -12,5 +12,5 @@ ansible-playbook -Ki inventory.yml playbook.yml
 My sources (not exhaustive, I have anyway not check out the sources fully):
  - Jeff Geerling's [Ansible for DevOps](https://www.ansiblefordevops.com/)
  - Jeff Geerling's [Youtube Channel](https://www.youtube.com/c/JeffGeerling)
- - [Wolfgang's channel]([https://www.youtube.com/c/JeffGeerling](https://www.youtube.com/@WolfgangsChannel))
+ - [Wolfgang's channel](https://www.youtube.com/@WolfgangsChannel)
  - A nonending series of random webpages
