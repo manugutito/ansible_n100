@@ -35,3 +35,28 @@ After this:
 After installing ZFS and running `zpool import` to detect the status of the pool, the disks spin up and go back to Idle_b. The Power is then 25 W (in like with the results before reinstalling).
 
 Spinning the disks down by hand with openSeaChest brings the power consumption back down to ~19 W.
+
+# Identifying the problem
+
+Using iotop we can identify which process is doing I/O:
+
+```
+Total DISK READ:       484.47 M/s | Total DISK WRITE:        11.47 K/s
+Current DISK READ:     485.43 M/s | Current DISK WRITE:      19.12 K/s
+    TID  PRIO  USER    DISK READ>  DISK WRITE    COMMAND
+  17171 be/0 root      162.17 M/s    0.00 B/s [z_rd_int]
+  17172 be/0 root      118.19 M/s    0.00 B/s [z_rd_int]
+  17148 be/0 root      114.61 M/s    0.00 B/s [z_rd_int]
+  17317 be/7 root       89.51 M/s    0.00 B/s [dsl_scan_iss]
+```
+
+And googling `z_rd_int` solves the problem:
+
+```
+$ sudo zpool status myzpool
+  pool: myzpool
+ state: ONLINE
+  scan: scrub in progress since Sat Oct 12 22:24:01 2024
+```
+
+So it should literally go away on its own. Funny how the scrub persisted through two Ubuntu reinstalls!
