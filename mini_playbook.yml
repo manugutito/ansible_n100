@@ -33,3 +33,11 @@
   - name: Do some power optimizations
     become: true
     ansible.builtin.shell: powertop --auto-tune && echo 1 >> /sys/bus/pci/drivers/r8169/0000\:02\:00.0/link/l1_aspm
+  - name: Install ZFS
+    become: true
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400
+      name:
+        - zfsutils-linux
+      state: latest

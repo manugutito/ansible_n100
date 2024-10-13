@@ -29,3 +29,9 @@ After this:
 
 - Power: ~19 W with the HDDs in standby_z
 - Package C states: 95+% in C10!
+
+# Installing ZFS
+
+After installing ZFS and running `zpool import` to detect the status of the pool, the disks spin up and go back to Idle_b. The Power is then 25 W (in like with the results before reinstalling).
+
+Spinning the disks down by hand with openSeaChest brings the power consumption back down to ~19 W.
