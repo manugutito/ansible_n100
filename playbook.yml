@@ -47,30 +47,30 @@
   # Basic ufw configuration
   # TODO: make sure we don't get locked out
   # Also make sure no reloads or restarts happen unless we make a change
-  - name: Deny incoming as a general rule
+  - name: Deny in as a general rule
     become: true
     community.general.ufw:
       rule: deny
-      direction: incoming
+      direction: in
     notify:
     - reload ufw
-  - name: Allow outgoing as a general rule
+  - name: Allow out as a general rule
     become: true
     community.general.ufw:
       rule: allow
-      direction: outgoing
+      direction: out
     notify:
     - reload ufw
   - name: Allow ssh
     become: true
-    comunity.general.ufw:
+    community.general.ufw:
       rule: allow
       name: OpenSSH
     notify:
     - reload ufw
   - name: Allow samba
     become: true
-    comunity.general.ufw:
+    community.general.ufw:
       rule: allow
       name: Samba
     notify:
@@ -93,12 +93,6 @@
     become: true
     ufw:
       state: enabled
-
-  handlers:
-  - name: Reload ufw
-    become: true
-    ufw:
-      state: reloaded
 
   # Power optimizations
   # Bear in mind that no effort was made to find the right path for the Realtek NIC
@@ -187,3 +181,10 @@
         - docker-buildx-plugin
         - docker-compose-plugin
       state: latest
+
+  handlers:
+  - name: reload ufw
+    become: true
+    ufw:
+      state: reloaded
+
