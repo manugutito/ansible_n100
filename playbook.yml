@@ -16,11 +16,8 @@
       owner: root
       group: root
       mode: '0640'
-  - name: Restart sshd to apply config
-    become: yes
-    service:
-      name: ssh
-      state: restarted
+    notify:
+      - restart ssh
 
   # Install basics
   # TODO: put packages in Ansible variable
@@ -45,22 +42,7 @@
         - zfsutils-linux
 
   # Basic ufw configuration
-  # TODO: make sure we don't get locked out
-  # Also make sure no reloads or restarts happen unless we make a change
-  - name: Deny in as a general rule
-    become: true
-    community.general.ufw:
-      rule: deny
-      direction: in
-    notify:
-    - reload ufw
-  - name: Allow out as a general rule
-    become: true
-    community.general.ufw:
-      rule: allow
-      direction: out
-    notify:
-    - reload ufw
+  # TODO: blocking incoming by default seems problematic, figure out
   - name: Allow ssh
     become: true
     community.general.ufw:
@@ -120,6 +102,8 @@
       owner: root
       group: root
       mode: '0644'
+    notify:
+    - restart minidlna
   - name: Create hdd group
     become: yes
     ansible.builtin.group:
@@ -137,11 +121,6 @@
       name: mjgutierrez
       groups: hdd
       append: yes
-  - name: Restart minidlna to apply config
-    become: yes
-    service:
-      name: minidlna
-      state: restarted
 
   # Install docker
   - name: Install docker pre-requisites
@@ -183,8 +162,20 @@
       state: latest
 
   handlers:
+
   - name: reload ufw
     become: true
     ufw:
       state: reloaded
 
+  - name: restart ssh
+    become: yes
+    service:
+      name: ssh
+      state: restarted
+
+  - name: restart minidlna
+    become: yes
+    service:
+      name: minidlna
+      state: restarted

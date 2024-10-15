@@ -2,9 +2,9 @@
 
 ## sshd
 
-- [ ] Make configuration idempotent (edit lines instead of copying file)
+- [ ] Consider editing lines instead of copying file
 - [ ] Make sure key used by Ansible is there
-- [ ] Do not restart if no changes were made
+- [x] Do not restart if no changes were made
 
 # Install basic packages
 
@@ -12,12 +12,12 @@
 
 # ufw
 
-- [ ] Make sure we don't get locked out
-- [ ] Make sure no reloads or restarts happen unless we make a change
+- [ ] Figure out how to deny incoming by default without getting locked out
+- [x] Make sure no reloads or restarts happen unless we make a change
 
 # minidlna
 
-- [ ] Do not restart if no changes were made
+- [x] Do not restart if no changes were made
 
 # docker
 
