@@ -10,6 +10,11 @@
 
 - [ ] Put package list in Ansible variable
 
+# ufw
+
+- [ ] Make sure we don't get locked out
+- [ ] Make sure no reloads or restarts happen unless we make a change
+
 # minidlna
 
 - [ ] Do not restart if no changes were made
