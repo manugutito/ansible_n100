@@ -1,6 +1,9 @@
-- name: Apt update and upgrade
+- name: Test small things
   hosts: n100
   tasks:
-  - name: Run powertop autotune
+  - name: Edit file for ASPM
     become: true
-    ansible.builtin.shell: powertop --auto-tune >> /home/mjgutierrez/test.out
+    ansible.builtin.lineinfile:
+      path: /sys/bus/pci/drivers/r8169/0000:02:00.0/link/l1_aspm
+      regexp: '0'
+      line: '1'

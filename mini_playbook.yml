@@ -35,12 +35,16 @@
         - powertop
         - samba
   # Bear in mind that no effort was made to find the right path for the Realtek NIC
-  # Also blindly running powertop --auto-tune might not be such a good idea. Perhaps
-  # it would be better to apply the different settings one by one
-  # Also this edits the files every time!
-  - name: Do some power optimizations
+  - name: Edit file to enable ASPM on the Realtek NIC
     become: true
-    ansible.builtin.shell: powertop --auto-tune && echo 1 >> /sys/bus/pci/drivers/r8169/0000\:02\:00.0/link/l1_aspm
+    ansible.builtin.lineinfile:
+      path: /sys/bus/pci/drivers/r8169/0000:02:00.0/link/l1_aspm
+      regexp: '0'
+      line: '1'
+  # This may not be a great idea to run blindly. Also it is not idempotent
+  - name: Run powertop --auto-tune
+    become: true
+    ansible.builtin.shell: powertop --auto-tune
   - name: Install ZFS
     become: true
     apt:
