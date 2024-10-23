@@ -2,7 +2,6 @@
   hosts: n100
   tasks:
   # Configure sshd
-  # TODO: make idempotent
   # Here we rely on the keys being copied (taken from GitHub during install)
   # Perhaps we should make sure that at least the key Ansible uses is present
   # before we restart sshd, otherwise we could get locked out
@@ -39,6 +38,7 @@
         - powertop
         - samba
         - ufw
+        - wireguard
         - zfsutils-linux
 
   # Basic ufw configuration
@@ -75,6 +75,19 @@
     become: true
     ufw:
       state: enabled
+
+  - name: Load samba config
+    become: yes
+    ansible.builtin.copy:
+      src: ./config_files/smb.conf
+      dest: /etc/samba/smb.conf
+      remote_src: no
+      backup: yes
+      owner: root
+      group: root
+      mode: '0640'
+    notify:
+      - restart samba
 
   # Power optimizations
   # Bear in mind that no effort was made to find the right path for the Realtek NIC
@@ -178,4 +191,10 @@
     become: yes
     service:
       name: minidlna
+      state: restarted
+
+  - name: restart samba
+    become: yes
+    service:
+      name: smbd
       state: restarted

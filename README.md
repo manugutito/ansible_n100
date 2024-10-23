@@ -40,3 +40,11 @@ My sources (not exhaustive, I have anyway not check out the sources fully):
 
 - [ ] Use non-deprecated way to trust Docker PPA
 - [ ] [Check out Jeff Geerling's Ansible for Docker](https://github.com/geerlingguy/ansible-role-docker)
+
+### samba
+
+- [ ] Do `smbpasswd` with ansible and idempotent
+
+### wireguard
+
+- [ ] Set up interface in an idempotent way
