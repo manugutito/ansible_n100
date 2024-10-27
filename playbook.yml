@@ -186,6 +186,10 @@
         - python3.12-venv
 
   # Postfix stuff
+  # To generate the app password see here:
+  # https://support.google.com/accounts/answer/185833?hl=en
+  # For more information about how to configure:
+  # https://dev.to/chigozieco/configure-postfix-to-send-email-with-gmails-smtp-from-the-terminal-4cco
   - name: Install postfix
     become: true
     apt:
