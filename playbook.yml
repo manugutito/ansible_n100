@@ -35,7 +35,6 @@
         - iotop
         - minidlna
         - openseachest
-        - python3-pip
         - powertop
         - samba
         - ufw
@@ -175,6 +174,15 @@
         - docker-compose-plugin
       state: latest
 
+  # Install python stuff
+  - name: Install python apt packages
+    become: true
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400
+      name:
+        - python3-pip
+        - python3.12-venv
 
 # Handlers section: to act if e.g. a config file has changed
   handlers:
