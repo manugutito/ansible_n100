@@ -1,4 +1,4 @@
-- name: Incrementally install stuff to diagnose
+- name: Set up n100 server
   hosts: n100
   tasks:
   # Configure sshd
@@ -35,6 +35,7 @@
         - iotop
         - minidlna
         - openseachest
+        - python3-pip
         - powertop
         - samba
         - ufw
@@ -174,6 +175,8 @@
         - docker-compose-plugin
       state: latest
 
+
+# Handlers section: to act if e.g. a config file has changed
   handlers:
 
   - name: reload ufw
