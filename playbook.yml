@@ -35,6 +35,7 @@
         - iotop
         - minidlna
         - openseachest
+        - postfix
         - powertop
         - samba
         - ufw
@@ -184,6 +185,41 @@
         - python3-pip
         - python3.12-venv
 
+  # Postfix stuff
+  - name: Install postfix
+    become: true
+    apt:
+      name:
+        - postfix
+        - ca-certificates
+        - mailutils
+
+  - name: Copy app password for email
+    become: true
+    ansible.builtin.copy:
+      src: ./config_files/sasl_passwd
+      dest: /etc/postfix/sasl/sasl_passwd
+      remote_src: no
+      backup: yes
+      owner: root
+      group: root
+      mode: '0600'
+    notify:
+    - postmap sasl
+
+  - name: Copy postfix config file
+    become: true
+    ansible.builtin.copy:
+      src: ./config_files/main.cf
+      dest: /etc/postfix/main.cf
+      remote_src: no
+      backup: yes
+      owner: root
+      group: root
+      mode: '0644'
+    notify:
+    - restart postfix
+
 # Handlers section: to act if e.g. a config file has changed
   handlers:
 
@@ -208,4 +244,14 @@
     become: yes
     service:
       name: smbd
+      state: restarted
+
+  - name: postmap sasl
+    become: yes
+    ansible.builtin.shell: postmap /etc/postfix/sasl/sasl_passwd && chmod 600 /etc/postfix/sasl/*
+
+  - name: restart postfix
+    become: yes
+    service:
+      name: postfix
       state: restarted
