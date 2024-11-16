@@ -39,6 +39,7 @@
         - powertop
         - samba
         - ufw
+        - unzip
         - wireguard
         - zfsutils-linux
 
