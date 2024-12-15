@@ -48,3 +48,4 @@ My sources (not exhaustive, I have anyway not check out the sources fully):
 ### wireguard
 
 - [ ] Set up interface in an idempotent way
+- [ ] [Auto start interface on reboot](https://www.ivpn.net/knowledgebase/linux/linux-autostart-wireguard-in-systemd/)
