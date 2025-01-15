@@ -94,16 +94,16 @@
 
   # Power optimizations
   # Bear in mind that no effort was made to find the right path for the Realtek NIC
-  - name: Edit file to enable ASPM on the Realtek NIC
-    become: true
-    ansible.builtin.lineinfile:
-      path: /sys/bus/pci/drivers/r8169/0000:02:00.0/link/l1_aspm
-      regexp: '0'
-      line: '1'
+#  - name: Edit file to enable ASPM on the Realtek NIC
+#    become: true
+#    ansible.builtin.lineinfile:
+#      path: /sys/bus/pci/drivers/r8169/0000:02:00.0/link/l1_aspm
+#      regexp: '0'
+#      line: '1'
   # This may not be a great idea to run blindly. Also it is not idempotent
-  - name: Run powertop --auto-tune
-    become: true
-    ansible.builtin.shell: powertop --auto-tune
+#  - name: Run powertop --auto-tune
+#    become: true
+#    ansible.builtin.shell: powertop --auto-tune
 
   # Configure minidlna
   # We take a copy of an existing config file
@@ -225,6 +225,32 @@
       mode: '0644'
     notify:
     - restart postfix
+
+  # Install tailscale
+  # This method is deprecated now. TODO: use new method
+  # Message:
+  # https://download.docker.com/linux/ubuntu/dists/noble/InRelease: Key is stored in
+  # legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in
+  # apt-key(8) for details.
+  - name: Add Tailscale GPG apt Key
+  # TODO: "noble" is hardcoded here
+    become: true
+    apt_key:
+      url: https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg
+      state: present
+  - name: Add Tailscale repository
+  # TODO: make idempotent
+  # Using apt_repository as for docker does not work
+    become: true
+    ansible.builtin.shell: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+  - name: Install Tailscale
+    become: true
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400
+      name:
+        - tailscale
+      state: latest
 
 # Handlers section: to act if e.g. a config file has changed
   handlers:

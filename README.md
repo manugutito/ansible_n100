@@ -17,6 +17,10 @@ My sources (not exhaustive, I have anyway not check out the sources fully):
 
 ## TODOs
 
+### Power savings
+- [ ] ASPM stuff broke, fix!
+- [ ] Un-comment
+
 ### sshd
 
 - [ ] Consider editing lines instead of copying file
