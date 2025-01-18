@@ -125,6 +125,7 @@
     ansible.builtin.group:
       name: media
       state: present
+      gid: 2000
   - name: add minidlna to group media
     become: yes
     ansible.builtin.user:
