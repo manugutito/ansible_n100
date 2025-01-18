@@ -120,22 +120,22 @@
       mode: '0644'
     notify:
     - restart minidlna
-  - name: Create hdd group
+  - name: Create media group
     become: yes
     ansible.builtin.group:
-      name: hdd
+      name: media
       state: present
-  - name: add minidlna to group hdd
+  - name: add minidlna to group media
     become: yes
     ansible.builtin.user:
       name: minidlna
-      groups: hdd
+      groups: media
       append: yes
-  - name: add mjgutierrez to group hdd
+  - name: add mjgutierrez to group media
     become: yes
     ansible.builtin.user:
       name: mjgutierrez
-      groups: hdd
+      groups: media
       append: yes
 
   # Install docker
