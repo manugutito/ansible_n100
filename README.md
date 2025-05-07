@@ -15,7 +15,14 @@ My sources (not exhaustive, I have anyway not check out the sources fully):
  - [Wolfgang's channel](https://www.youtube.com/@WolfgangsChannel)
  - A nonending series of random webpages
 
+## Notes to self
+- DNS is kinda broken within Docker. DNS manually added as described [here](https://confidence.sh/blog/fix-docker-container-dns-internet-issues/).
+    Created ```/etc/docker/daemon.json``` (it didn't exist before) and specified DNS to be used within Docker. This works for now.
+
 ## TODOs
+
+### DNS
+- [ ] Fix
 
 ### Power savings
 - [ ] ASPM stuff broke, fix!
